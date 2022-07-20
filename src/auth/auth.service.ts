@@ -24,7 +24,7 @@ export class AuthService {
       const web3Gateway = new Web3Gateway(Number(process.env.CHAIN_ID));
       address = await web3Gateway.recover(
         [requestData.address],
-        requestData.signature,
+        requestData.signature
       );
     } catch (error) {
       throw new UnauthorizedException(error.message);

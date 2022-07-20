@@ -55,7 +55,7 @@ export class Web3ETH implements IWeb3API {
       const hash = this.web3Instance.utils.soliditySha3(...dataSign);
       const sign = this.web3Instance.eth.accounts.sign(
         hash,
-        process.env.WALLET_PRIVATE_KEY,
+        process.env.WALLET_PRIVATE_KEY
       );
       this.logger.debug('sign(): sign', sign);
       return sign.signature;

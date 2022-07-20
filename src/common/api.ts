@@ -6,6 +6,6 @@ export function ApiError(code = '', message: any) {
       code,
       message,
     },
-    400,
+    400
   );
 }

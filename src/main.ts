@@ -33,7 +33,7 @@ async function bootstrap() {
         users: {
           [process.env.SWAGGER_USER]: process.env.SWAGGER_PASSWORD,
         },
-      }),
+      })
     );
     const config = new DocumentBuilder()
       .setTitle('Marketplace')
@@ -53,4 +53,3 @@ async function bootstrap() {
   await app.listen(process.env.PORT);
 }
 bootstrap();
-

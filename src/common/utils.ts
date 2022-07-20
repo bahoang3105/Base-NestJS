@@ -1,8 +1,9 @@
 import { Logger } from '@nestjs/common';
 import ObjectID from 'bson-objectid';
 import { Types } from 'mongoose';
-const CryptoJS = require('crypto-js');
+import CryptoJS from 'crypto-js';
 import BigNumber from 'bignumber.js';
+
 export class Utils {
   private static readonly logger = new Logger(Utils.name);
 
@@ -11,7 +12,7 @@ export class Utils {
    * @param {string} str
    * @return {boolean}
    */
-  public static isObjectId(str: string) {
+  public static isObjectId(str: string): boolean {
     try {
       new Types.ObjectId(str);
       return true;
@@ -22,28 +23,28 @@ export class Utils {
 
   /**
    * Convert string to Mongo ObjectId
-   * @param {any} str
-   * @return {Types.ObjectId}
+   * @param {string} str
+   * @return {ObjectId}
    */
-  public static toObjectId(str: any) {
+  public static toObjectId(str: string): Types.ObjectId {
     return new Types.ObjectId(str);
   }
 
   /**
    * Create mongodb id
-   * @return {Types.ObjectId}
+   * @return {ObjectId}
    */
-  public static createObjectId() {
+  public static createObjectId(): Types.ObjectId {
     return new Types.ObjectId(new ObjectID());
   }
 
   /**
    * Convert array string to array Mongo ObjectId
-   * @param {string[]} strs
+   * @param {string[]} strList
    * @return {Types.ObjectId[]}
    */
-  public static toObjectIds(strs: string[]) {
-    return strs.map((str) => this.toObjectId(str));
+  public static toObjectIds(strList: string[]): Types.ObjectId[] {
+    return strList.map((str) => this.toObjectId(str));
   }
 
   /**
@@ -52,7 +53,7 @@ export class Utils {
    * @param {number} coinDecimal
    * @return {string}
    */
-  public static convertPrice(value: any, coinDecimal = 18) {
+  public static convertPrice(value: any, coinDecimal = 18): string {
     BigNumber.config({
       EXPONENTIAL_AT: 100,
     });
@@ -66,7 +67,7 @@ export class Utils {
    * @param {any[]} array
    * @return {any}
    */
-  public static getRandom(array: any[]) {
+  public static getRandom(array: any[]): any {
     return array[Math.floor(Math.random() * array.length)];
   }
 
@@ -148,7 +149,7 @@ export class Utils {
     }
     this.logger.debug(
       'paginate(): pagingOptions',
-      JSON.stringify(pagingOptions),
+      JSON.stringify(pagingOptions)
     );
     return model.paginate(match, pagingOptions);
   }

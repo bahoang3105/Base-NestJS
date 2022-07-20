@@ -21,7 +21,7 @@ export class LoggingInterceptor implements NestInterceptor {
     this.logger.debug(
       `${req.user ? `[${req.user['address']}]` : ''}[${req.ip}] ${req.method} ${
         req.originalUrl
-      }`,
+      }`
     );
     if (req.query && Object.keys(req.query).length > 0) {
       this.logger.debug('query', req.query);
@@ -36,9 +36,9 @@ export class LoggingInterceptor implements NestInterceptor {
         this.logger.debug(
           `${req.user ? `[${req.user['address']}]` : ''}[${req.ip}] ${
             req.method
-          } ${req.originalUrl} ${Date.now() - now}ms`,
+          } ${req.originalUrl} ${Date.now() - now}ms`
         );
-      }),
+      })
     );
   }
 }

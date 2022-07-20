@@ -4,11 +4,12 @@ module.exports = {
     project: "tsconfig.json",
     sourceType: "module",
   },
-  plugins: ["@typescript-eslint/eslint-plugin"],
+  plugins: ["@typescript-eslint/eslint-plugin", "prettier"],
   extends: [
     "google",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
+    "prettier",
   ],
   root: true,
   env: {
@@ -16,13 +17,6 @@ module.exports = {
     jest: true,
   },
   ignorePatterns: [".eslintrc.js"],
-  "prettier/prettier": [
-    "error",
-    {
-      singleQuote: true,
-      parse: "flow",
-    },
-  ],
   rules: {
     camelcase: ["error"],
     "max-lines-per-function": [
@@ -31,6 +25,13 @@ module.exports = {
         max: 100,
         skipComments: true,
         skipBlankLines: true,
+      },
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        singleQuote: true,
+        parse: "flow",
       },
     ],
     "@typescript-eslint/interface-name-prefix": 0,

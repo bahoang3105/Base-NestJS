@@ -41,7 +41,7 @@ describe('AuthService', () => {
       });
     } catch (error) {
       expect(error.message).toContain(
-        'The recovery param is more than two bits',
+        'The recovery param is more than two bits'
       );
     }
   });
@@ -58,4 +58,3 @@ describe('AuthService', () => {
     }
   });
 });
-

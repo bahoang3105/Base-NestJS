@@ -21,4 +21,3 @@ import 'dotenv/config';
  * AuthModule
  */
 export class AuthModule {}
-
