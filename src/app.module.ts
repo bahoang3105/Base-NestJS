@@ -8,6 +8,7 @@ import { RedisClientOptions } from 'redis';
 import * as redisStore from 'cache-manager-redis-store';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TasksModule } from './providers/schedule/tasks.module';
+import { NftsModule } from './modules/nfts/nfts.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { TasksModule } from './providers/schedule/tasks.module';
     TasksModule,
     AuthModule,
     UsersModule,
+    NftsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
