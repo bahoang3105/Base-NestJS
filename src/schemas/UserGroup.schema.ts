@@ -9,7 +9,7 @@ const aggregatePaginate = require('mongoose-aggregate-paginate-v2');
 export type UserGroupDocument = UserGroup & Document;
 export enum UserGroupType {
   Host = 'host',
-  Participants = 'participant',
+  Participant = 'participant',
 }
 
 @Schema({

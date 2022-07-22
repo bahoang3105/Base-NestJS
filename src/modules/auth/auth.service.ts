@@ -47,6 +47,7 @@ export class AuthService {
     if (!checkUser) {
       return ApiError('E2', 'Wrong username or password');
     }
+    console.log(checkUser);
     const decryptPassword = Utils.decrypt(checkUser.password);
     if (decryptPassword !== password) {
       return ApiError('E2', 'Wrong username or password');

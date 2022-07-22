@@ -1,44 +1,19 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { GroupsService } from './groups.service';
 import { CreateGroupDto } from './dto/create-group.dto';
-import { UpdateGroupDto } from './dto/update-group.dto';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { CurrentUser } from 'src/common/decorators/users.decorator';
 
 @Controller('groups')
 @ApiTags('groups')
 export class GroupsController {
   constructor(private readonly groupsService: GroupsService) {}
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post()
-  create(@Body() createGroupDto: CreateGroupDto) {
-    return this.groupsService.create(createGroupDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.groupsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.groupsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateGroupDto: UpdateGroupDto) {
-    return this.groupsService.update(+id, updateGroupDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.groupsService.remove(+id);
+  create(@Body() createGroupDto: CreateGroupDto, @CurrentUser() user) {
+    return this.groupsService.create(createGroupDto, user.username);
   }
 }

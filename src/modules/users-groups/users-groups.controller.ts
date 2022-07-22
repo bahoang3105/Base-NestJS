@@ -1,34 +1,41 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, UseGuards, Query } from '@nestjs/common';
 import { UsersGroupsService } from './users-groups.service';
-import { CreateUsersGroupDto } from './dto/create-users-group.dto';
-import { UpdateUsersGroupDto } from './dto/update-users-group.dto';
+import { SearchGroupDto } from './dto/search-group.dto';
+import { UserGroupType } from 'src/schemas/UserGroup.schema';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { CurrentUser } from 'src/common/decorators/users.decorator';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @Controller('users-groups')
+@ApiTags('users-groups')
 export class UsersGroupsController {
   constructor(private readonly usersGroupsService: UsersGroupsService) {}
 
-  @Post()
-  create(@Body() createUsersGroupDto: CreateUsersGroupDto) {
-    return this.usersGroupsService.create(createUsersGroupDto);
+  @UseGuards(JwtAuthGuard)
+  @Get('hostedGroup')
+  @ApiBearerAuth()
+  searchHostedGroup(
+    @Query() searchGroupDto: SearchGroupDto,
+    @CurrentUser() user
+  ) {
+    return this.usersGroupsService.searchGroup(
+      searchGroupDto,
+      UserGroupType.Host,
+      user.username
+    );
   }
 
-  @Get()
-  findAll() {
-    return this.usersGroupsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersGroupsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUsersGroupDto: UpdateUsersGroupDto) {
-    return this.usersGroupsService.update(+id, updateUsersGroupDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersGroupsService.remove(+id);
+  @UseGuards(JwtAuthGuard)
+  @Get('joinedGroup')
+  @ApiBearerAuth()
+  searchJoinedGroup(
+    @Query() searchGroupDto: SearchGroupDto,
+    @CurrentUser() user
+  ) {
+    return this.usersGroupsService.searchGroup(
+      searchGroupDto,
+      UserGroupType.Participant,
+      user.username
+    );
   }
 }

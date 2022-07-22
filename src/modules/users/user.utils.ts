@@ -1,4 +1,3 @@
-import { SearchGroupDto } from 'src/modules/users/dto/search-group.dto';
 import { SearchUserDto } from 'src/modules/users/dto/search-user.dto';
 
 export class UserUtils {
@@ -25,12 +24,5 @@ export class UserUtils {
       match.sex = sex;
     }
     return match;
-  };
-
-  public static matchSearchGroup = (groupDto: SearchGroupDto, type: string) => {
-    const { keyword, fromDate, toDate } = groupDto;
-    const match: any = {};
-    if (keyword) {
-    }
   };
 }

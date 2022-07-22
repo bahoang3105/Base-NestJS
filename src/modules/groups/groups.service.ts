@@ -2,34 +2,30 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Group, GroupDocument } from 'src/schemas/Group.schema';
+import { UserGroupType } from 'src/schemas/UserGroup.schema';
 import { UsersGroupsService } from '../users-groups/users-groups.service';
+import { UsersService } from '../users/users.service';
 import { CreateGroupDto } from './dto/create-group.dto';
-import { UpdateGroupDto } from './dto/update-group.dto';
 
 @Injectable()
 export class GroupsService {
   constructor(
     @InjectModel(Group.name) private groupModel: Model<GroupDocument>,
-    private usersGroupsService: UsersGroupsService
+    private usersGroupsService: UsersGroupsService,
+    private usersService: UsersService
   ) {}
 
-  create(createGroupDto: CreateGroupDto) {
-    return 'This action adds a new group';
-  }
-
-  findAll() {
-    return `This action returns all groups`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} group`;
-  }
-
-  update(id: number, updateGroupDto: UpdateGroupDto) {
-    return `This action updates a #${id} group`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} group`;
+  async create(createGroupDto: CreateGroupDto, username: string) {
+    const { name } = createGroupDto;
+    const host = await this.usersService.findUserByUsernameWithoutPassword(
+      username
+    );
+    const newGroup = await new this.groupModel({ name, host }).save();
+    await this.usersGroupsService.create({
+      user: host,
+      group: newGroup,
+      type: UserGroupType.Host,
+    });
+    return newGroup;
   }
 }

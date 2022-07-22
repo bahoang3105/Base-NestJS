@@ -2,12 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from 'src/schemas/User.schema';
-import { UserUtils } from 'src/common/user.utils';
+import { UserUtils } from 'src/modules/users/user.utils';
 import { Utils } from 'src/common/utils';
 import { ApiOk } from 'src/common/api';
 import { SignupDto } from '../auth/dto/signup.dto';
 import { SearchUserDto } from './dto/search-user.dto';
-import { SearchGroupDto } from './dto/search-group.dto';
 
 @Injectable()
 export class UsersService {
@@ -19,14 +18,23 @@ export class UsersService {
   }
 
   async findUserByUsername(username: string) {
-    return this.userModel.findOne({ username });
+    const user = await this.userModel.findOne({ username });
+    return user;
+  }
+
+  async findUserByUsernameWithoutPassword(username: string) {
+    const user = await this.userModel.findOne({ username });
+    if (user) {
+      user.password = undefined;
+    }
+    return user;
   }
 
   async searchUser(searchUserDto: SearchUserDto) {
     const $match = UserUtils.matchSearchUser(searchUserDto);
     const searchUserPipeline = [
       {
-        $match: $match,
+        $match,
       },
       {
         $project: {
@@ -41,22 +49,4 @@ export class UsersService {
     );
     return ApiOk(result);
   }
-
-  async searchHostedGroup(searchHostedGroupDto: SearchGroupDto) {
-    const searchHostedGroupPipeline = [
-      // {
-      //   $match: {
-      //     username
-      //   }
-      // },
-      // {
-      //   $unwind: '$hostedGroup',
-      // },
-      // {
-      //   $match:
-      // },
-    ];
-  }
-
-  async searchJoinedGroup(searchJoinedGroupDto: SearchGroupDto) {}
 }
