@@ -2,23 +2,28 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsNumber } from 'class-validator';
 
+enum SortValue {
+  ASC = 1,
+  DESC = 2,
+}
+
 export class SearchDto {
-  @ApiProperty()
-  keyword = '';
+  @ApiProperty({ required: false })
+  keyword: string = '';
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @Type(() => Number)
   @IsNumber()
-  page = 1;
+  page: number = 1;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @Type(() => Number)
   @IsNumber()
-  limit = 10;
+  limit: number = 10;
 
-  @ApiProperty()
-  sort: object;
+  @ApiProperty({ required: false })
+  sortField: string;
 
-  @ApiProperty()
-  projection: object;
+  @ApiProperty({ required: false })
+  sortValue: SortValue;
 }

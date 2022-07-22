@@ -1,8 +1,8 @@
 import { Logger } from '@nestjs/common';
 import ObjectID from 'bson-objectid';
 import { Types } from 'mongoose';
-import CryptoJS from 'crypto-js';
 import BigNumber from 'bignumber.js';
+const CryptoJS = require('crypto-js');
 
 export class Utils {
   private static readonly logger = new Logger(Utils.name);
@@ -110,17 +110,17 @@ export class Utils {
    * @param {string} str
    * @return {string}
    */
-  public static encrypt(str) {
+  public static encrypt(str: string): string {
     return CryptoJS.AES.encrypt(str, process.env.CRYPTO_SECRET).toString();
   }
 
   /**
    * Decrypt
-   * @param {string} ciphertext
+   * @param {string} cipherText
    * @return {string}
    */
-  public static decrypt(ciphertext) {
-    const bytes = CryptoJS.AES.decrypt(ciphertext, process.env.CRYPTO_SECRET);
+  public static decrypt(cipherText: string): string {
+    const bytes = CryptoJS.AES.decrypt(cipherText, process.env.CRYPTO_SECRET);
     return bytes.toString(CryptoJS.enc.Utf8);
   }
 
@@ -131,7 +131,7 @@ export class Utils {
    * @param {any} query
    * @return {Promise<any>}
    */
-  public static paginate(model: any, match: any, query: any) {
+  public static paginate(model: any, match: any, query: any): Promise<any> {
     this.logger.debug('paginate(): match', JSON.stringify(match));
     const pagingOptions: any = {
       page: query.page,
@@ -161,7 +161,11 @@ export class Utils {
    * @param {any} query
    * @return {Promise<any>}
    */
-  public static aggregatePaginate(model: any, pipe: any, query: any) {
+  public static aggregatePaginate(
+    model: any,
+    pipe: any,
+    query: any
+  ): Promise<any> {
     this.logger.debug('aggregatePaginate(): match', JSON.stringify(pipe));
     const pagingOptions: any = {
       page: query.page,

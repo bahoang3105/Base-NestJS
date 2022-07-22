@@ -9,3 +9,9 @@ export function ApiError(code = '', message: any) {
     400
   );
 }
+
+export function ApiOk(data: any) {
+  return {
+    data,
+  };
+}

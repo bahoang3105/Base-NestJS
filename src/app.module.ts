@@ -2,13 +2,13 @@ import { CacheModule, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './modules/users/users.module';
 import { RedisClientOptions } from 'redis';
 import * as redisStore from 'cache-manager-redis-store';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TasksModule } from './providers/schedule/tasks.module';
-import { NftsModule } from './modules/nfts/nfts.module';
+import { GroupsModule } from './modules/groups/groups.module';
+import { TodosModule } from './modules/todos/todos.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -24,9 +24,9 @@ import { NftsModule } from './modules/nfts/nfts.module';
     }),
     MongooseModule.forRoot(process.env.MONGODB_URI),
     TasksModule,
-    AuthModule,
+    GroupsModule,
+    TodosModule,
     UsersModule,
-    NftsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

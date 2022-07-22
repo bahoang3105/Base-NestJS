@@ -1,8 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { SearchDto } from 'src/common/search.dto';
-import { UserSex } from 'src/schemas/User.schema';
 
-export class SearchUserDto extends SearchDto {
+export class SearchGroupDto extends SearchDto {
   @ApiProperty({ required: false })
-  sex: UserSex;
+  fromDate: Date;
+
+  @ApiProperty({ required: false })
+  toDate: Date;
 }
