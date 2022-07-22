@@ -14,12 +14,6 @@ export class Group {
   @Prop({ type: User })
   host: User;
 
-  @Prop({ type: [String] })
-  listTaskId: string[];
-
-  @Prop({ type: [User] })
-  listUser: User[];
-
   @Prop({ type: String })
   name: string;
 }
