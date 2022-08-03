@@ -1,5 +1,6 @@
 import { IPFSHTTPClient } from 'ipfs-http-client';
 const { create, urlSource } = require('ipfs-http-client');
+
 export class IpfsUtils {
   private static ipfsInstance: IPFSHTTPClient;
 

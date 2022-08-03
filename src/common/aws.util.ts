@@ -1,8 +1,9 @@
 import { S3 } from 'aws-sdk';
+
 export class AwsUtils {
   private static s3Instance: S3;
 
-  private static getS3Instance() {
+  private static getS3Instance(): S3 {
     if (!this.s3Instance) {
       this.s3Instance = new S3({
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -13,7 +14,7 @@ export class AwsUtils {
     return this.s3Instance;
   }
 
-  public static uploadS3(buffer, mimetype, name) {
+  public static uploadS3(buffer, mimetype, name): Promise<string> {
     const s3 = this.getS3Instance();
     const params = {
       Bucket: process.env.AWS_BUCKET,

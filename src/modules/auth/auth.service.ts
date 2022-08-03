@@ -1,6 +1,6 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { ApiError, ApiOk } from 'src/common/api';
+import { ApiError, ApiOk, ApiOkType } from 'src/common/api';
 import { Utils } from 'src/common/utils';
 import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/login.dto';
@@ -23,7 +23,7 @@ export class AuthService {
    * @param {SignupDto} requestData
    * @return {any} user information
    */
-  async signup(requestData: SignupDto) {
+  async signup(requestData: SignupDto): Promise<HttpException | ApiOkType> {
     const { username } = requestData;
     const checkExist = await this.usersService.findUserByUsername(username);
     if (checkExist) {
@@ -33,21 +33,24 @@ export class AuthService {
       ...requestData,
       password: Utils.encrypt(requestData.password),
     };
-    return ApiOk(await this.usersService.create(newUser));
+    try {
+      return ApiOk(await this.usersService.create(newUser));
+    } catch (e) {
+      return ApiError('E3', '');
+    }
   }
 
   /**
    * Login
    * @param {LoginDto} requestData
-   * @return {any} user information
+   * @return {Promise<HttpException | ApiOkType>} user information
    */
-  async login(requestData: LoginDto) {
+  async login(requestData: LoginDto): Promise<HttpException | ApiOkType> {
     const { username, password } = requestData;
     const checkUser = await this.usersService.findUserByUsername(username);
     if (!checkUser) {
       return ApiError('E2', 'Wrong username or password');
     }
-    console.log(checkUser);
     const decryptPassword = Utils.decrypt(checkUser.password);
     if (decryptPassword !== password) {
       return ApiError('E2', 'Wrong username or password');

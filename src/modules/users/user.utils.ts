@@ -1,9 +1,15 @@
 import { SearchUserDto } from 'src/modules/users/dto/search-user.dto';
+import { UserSex } from 'src/schemas/User.schema';
 
 export class UserUtils {
-  public static matchSearchUser = (userDto: SearchUserDto) => {
+  public static matchSearchUser = (
+    userDto: SearchUserDto
+  ): { $or; sex: UserSex } => {
     const { keyword, sex } = userDto;
-    const match: any = {};
+    const match = {
+      $or: undefined,
+      sex: undefined,
+    };
     if (keyword) {
       match.$or = [
         {

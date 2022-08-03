@@ -6,10 +6,13 @@ export class UsersGroupsUtils {
     groupDto: SearchGroupDto,
     userGroupType: UserGroupType,
     username: string
-  ) => {
+  ): { 'user.username': string; name; createdAt; type } => {
     const { keyword, fromDate, toDate } = groupDto;
-    const match: any = {
+    const match = {
       'user.username': username,
+      name: undefined,
+      createdAt: undefined,
+      type: undefined,
     };
     if (keyword) {
       match.name = {

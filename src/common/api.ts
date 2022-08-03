@@ -1,6 +1,10 @@
 import { HttpException } from '@nestjs/common';
 
-export function ApiError(code = '', message: any) {
+export type ApiOkType = {
+  data: object;
+};
+
+export function ApiError(code = '', message: string | object): HttpException {
   return new HttpException(
     {
       code,
@@ -10,7 +14,7 @@ export function ApiError(code = '', message: any) {
   );
 }
 
-export function ApiOk(data: any) {
+export function ApiOk(data: object): ApiOkType {
   return {
     data,
   };

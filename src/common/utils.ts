@@ -53,7 +53,7 @@ export class Utils {
    * @param {number} coinDecimal
    * @return {string}
    */
-  public static convertPrice(value: any, coinDecimal = 18): string {
+  public static convertPrice(value, coinDecimal = 18): string {
     BigNumber.config({
       EXPONENTIAL_AT: 100,
     });
@@ -67,7 +67,7 @@ export class Utils {
    * @param {any[]} array
    * @return {any}
    */
-  public static getRandom(array: any[]): any {
+  public static getRandom(array): any {
     return array[Math.floor(Math.random() * array.length)];
   }
 
@@ -76,20 +76,24 @@ export class Utils {
    * @param {number} ms
    * @return {Promise}
    */
-  public static wait(ms) {
+  public static wait(ms): Promise<unknown> {
     return new Promise((resolve) => {
       setTimeout(resolve, ms);
     });
   }
 
   /**
-   * Retry a promoise function
+   * Retry a promise function
    * @param {any} operation
    * @param {number} retries
    * @param {number} delay
    * @return {Promise<any>}
    */
-  public static retryFn(operation, retries = 3, delay = 500) {
+  public static retryFn(
+    operation: any,
+    retries: number = 3,
+    delay: number = 500
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
       return operation()
         .then(resolve)
@@ -131,12 +135,13 @@ export class Utils {
    * @param {any} query
    * @return {Promise<any>}
    */
-  public static paginate(model: any, match: any, query: any): Promise<any> {
+  public static paginate(model, match, query): Promise<any> {
     this.logger.debug('paginate(): match', JSON.stringify(match));
-    const pagingOptions: any = {
+    const pagingOptions = {
       page: query.page,
       limit: query.limit,
       sort: query.sort ? query.sort : { createdAt: 'desc' },
+      projection: undefined,
     };
     if (query.projection) {
       pagingOptions.projection = {};
@@ -161,16 +166,13 @@ export class Utils {
    * @param {any} query
    * @return {Promise<any>}
    */
-  public static aggregatePaginate(
-    model: any,
-    pipe: any,
-    query: any
-  ): Promise<any> {
+  public static aggregatePaginate(model, pipe, query): Promise<any> {
     this.logger.debug('aggregatePaginate(): match', JSON.stringify(pipe));
-    const pagingOptions: any = {
+    const pagingOptions = {
       page: query.page,
       limit: query.limit,
       sort: query.sort ? query.sort : { createdAt: 'desc' },
+      projection: undefined,
     };
     if (query.projection) {
       pagingOptions.projection = query.projection;

@@ -1,10 +1,11 @@
-import { Controller, Get, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, UseGuards, Query, Post, Body } from '@nestjs/common';
 import { UsersGroupsService } from './users-groups.service';
 import { SearchGroupDto } from './dto/search-group.dto';
 import { UserGroupType } from 'src/schemas/UserGroup.schema';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { CurrentUser } from 'src/common/decorators/users.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JoinGroupDto } from './dto/join-group.dto';
 
 @Controller('users-groups')
 @ApiTags('users-groups')
@@ -37,5 +38,12 @@ export class UsersGroupsController {
       UserGroupType.Participant,
       user.username
     );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post()
+  @ApiBearerAuth()
+  joinGroup(@Body() joinGroupDto: JoinGroupDto, @CurrentUser() user) {
+    return this.usersGroupsService.joinGroup(joinGroupDto, user.username);
   }
 }

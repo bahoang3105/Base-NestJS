@@ -12,10 +12,10 @@ import { ApiError } from '../api';
 import 'reflect-metadata';
 
 @Injectable()
-export class ValidationPipe implements PipeTransform<any> {
+export class ValidationPipe implements PipeTransform<string> {
   private readonly logger = new Logger('HttpLog');
 
-  async transform(value: any, { metatype }: ArgumentMetadata) {
+  async transform(value: string, { metatype }: ArgumentMetadata): Promise<any> {
     if (!metatype || !this.toValidate(metatype)) {
       return value;
     }
@@ -29,7 +29,7 @@ export class ValidationPipe implements PipeTransform<any> {
     return object;
   }
 
-  private getErrorMessages(errors: ValidationError[]) {
+  private getErrorMessages(errors: ValidationError[]): any {
     let messages = [];
     for (let index = 0; index < errors.length; index++) {
       const error = errors[index];

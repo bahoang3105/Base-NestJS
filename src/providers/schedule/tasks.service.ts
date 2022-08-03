@@ -7,7 +7,7 @@ export class TasksService {
   private readonly logger = new Logger(TasksService.name);
 
   @Cron(CronExpression.EVERY_10_MINUTES)
-  async syncCurrencyRate() {
+  async syncCurrencyRate(): Promise<void> {
     const response = await axios.get(
       `https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd`
     );

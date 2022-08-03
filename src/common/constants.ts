@@ -7,3 +7,7 @@ export const BlockChain = {
     ETH: [1, 3, 4, 5, 42],
   },
 };
+
+export const MESSAGE = {
+  ERR_OBJECT_ID: 'Validation failed (ObjectId is expected)',
+};

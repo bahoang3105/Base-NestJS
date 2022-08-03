@@ -5,18 +5,19 @@ import {
   CallHandler,
   Logger,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
-const querystring = require('querystring');
-import { Observable } from 'rxjs';
+import { Request } from 'express';
+import { MonoTypeOperatorFunction, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   private readonly logger = new Logger('HttpLog');
 
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(
+    context: ExecutionContext,
+    next: CallHandler
+  ): Observable<MonoTypeOperatorFunction<undefined>> {
     const req: Request = context.switchToHttp().getRequest();
-    const res: Response = context.switchToHttp().getResponse();
 
     this.logger.debug(
       `${req.user ? `[${req.user['address']}]` : ''}[${req.ip}] ${req.method} ${
